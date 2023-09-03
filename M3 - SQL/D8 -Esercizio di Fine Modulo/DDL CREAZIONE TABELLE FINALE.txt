@@ -1,0 +1,74 @@
+20:02 02/09/2023Create Database if not exists Ecommerce;
+
+
+use ecommerce;
+
+create table if not exists Utenti (
+Id_utente int primary key,
+Nome varchar (50) not null,
+Cognome varchar (50) not null,
+Email varchar(100) not null,
+Data_registrazione date not null,
+P_assword varchar (100) not null 
+);
+
+create table if not exists Ordini (
+Id_ordine int primary key,
+Id_utente int,
+Data_ordine date not null,
+Prezzo_totale decimal (10,2) not null,
+ foreign key (Id_utente) references Utenti (Id_utente) on update cascade on delete no action 
+);
+
+
+create table if not exists Categoria (
+Id_categoria int primary key,
+Nome_categoria varchar(100) not null
+
+
+ALTER TABLE `ecommerce`.`categoria` 
+RENAME TO  `ecommerce`.`categorie` ;
+
+
+
+
+create table if not exists Produttori (
+Id_produttore int primary key,
+Brand_produttore  varchar(255) not null
+);
+
+
+create table if not exists Prodotti (
+Id_prodotto int primary key,
+Nome varchar(255) not null,
+Descrizione text (255) not null,
+Prezzo decimal (10,2) not null,
+Quantità_disponibile int,
+Id_produttore int,
+Id_categoria int,
+ foreign key (Id_produttore) references Produttori (Id_produttore) on update cascade on delete no action,
+ foreign key (Id_categoria) references Categorie (Id_categoria) on update cascade on delete no action 
+ );
+ 
+ 
+ create table if not exists Dettaglio_ordini (
+Id_ordine int,
+Id_prodotto int,
+Quantità int,
+primary key (Id_ordine,Id_prodotto),
+ foreign key (Id_ordine) references Ordini (Id_ordine) on update cascade on delete no action,
+ foreign key (Id_prodotto) references Prodotti (Id_prodotto) on update cascade on delete no action 
+ );
+ 
+ 
+ 
+ 
+  create table if not exists Reviews (
+Id_review int primary key,
+Id_utente int,
+Id_prodotto int,
+Valutazione int,
+Commento text (255) not null,
+ foreign key (Id_utente) references Utenti (Id_utente) on update cascade on delete no action,
+ foreign key (Id_prodotto) references Prodotti (Id_prodotto) on update cascade on delete no action 
+ );

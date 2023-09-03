@@ -1,0 +1,88 @@
+
+
+Select *
+from Utenti;
+
+
+
+Select Brand_produttore
+From Produttori
+Order By Brand_produttore desc; 
+
+
+select Nome
+from Utenti 
+where Nome= 'Anna'
+
+
+
+
+---Visualizzare tutti gli ordini effettuati da un determinato utente (1):
+
+SELECT o.Id_ordine, o.Data_ordine,p.Prezzo, p.Nome AS NomeProdotto, d.Quantità 
+FROM Ordini o
+JOIN Dettaglio_ordini d ON o.Id_ordine = d.Id_ordine
+JOIN Prodotti p ON d.Id_prodotto = p.Id_prodotto
+WHERE o.Id_utente = 1; 
+
+
+---Visualizzare gli ordini effettuati in un determinato intervallo di date:
+
+SELECT o.Id_ordine, o.Data_ordine, o.Prezzo_totale, u.Nome, u.Cognome
+FROM Ordini o
+JOIN Utenti u ON o.Id_utente = u.Id_utente
+WHERE o.Data_ordine BETWEEN '2022-05-01' AND '2022-08-20';
+
+
+---Visualizzare i prodotti che hanno ricevuto una valutazione media superiore a 4:
+
+SELECT p.Nome AS NomeProdotto, p.Prezzo, AVG(r.Valutazione) AS MediaValutazione
+FROM Prodotti p
+JOIN Reviews r ON p.Id_prodotto = r.Id_prodotto
+GROUP BY p.Id_prodotto, p.Nome, p.Prezzo
+HAVING AVG(r.Valutazione) > 4
+
+Visualizzare tutti i prodotti in ordine di prezzo decrescente:
+
+SELECT Id_prodotto, Nome, Prezzo
+FROM Prodotti
+ORDER BY Prezzo DESC;
+
+
+---Creare una view che ci permetta di avere una vista degli ordini dettagliata:
+
+CREATE VIEW VistaOrdineDettagliata AS(
+SELECT o.Id_ordine, o.Data_ordine, u.Nome, u.Cognome, p.Nome AS NomeProdotto, d.Quantità , p.Prezzo, p.Prezzo * d.Quantità  AS TotaleOrdine
+FROM Ordini o
+JOIN Utenti u ON o.Id_utente = u.Id_utente
+JOIN Dettaglio_ordini d ON o.Id_ordine = d.Id_ordine
+JOIN Prodotti p ON d.Id_prodotto = p.Id_prodotto);
+
+
+---Utilizzare la view precedentemente creata per calcolare il totale degli ordini per ogni utente:
+
+SELECT Nome, Cognome, SUM(Quantità  * Prezzo) AS TotaleOrdini
+FROM VistaOrdineDettagliata
+GROUP BY Nome, Cognome
+ORDER BY SUM(Quantità  * Prezzo) DESC;
+
+
+---Visualizzare il nome del prodotto, il nome del produttore e il prezzo per tutti i prodotti di una determinata categoria (Scanner):
+
+SELECT p.Nome, pr.Brand_Produttore, p.Prezzo
+FROM Prodotti  p
+JOIN Produttori pr ON p.Id_produttore = pr.Id_produttore
+JOIN Categorie c ON p.Id_categoria = c.Id_categoria
+WHERE c.Nome_Categoria = 'Scanner';
+
+
+
+---Visualizzare il nome del prodotto, il prezzo e il numero totale di recensioni per ogni prodotto (con query innestata):
+
+
+SELECT p.Nome, p.Prezzo, (
+  SELECT COUNT(*)
+  FROM Reviews r
+  WHERE r.Id_prodotto = p.Id_prodotto
+) AS NumeroRecensioni
+FROM Prodotti p;
