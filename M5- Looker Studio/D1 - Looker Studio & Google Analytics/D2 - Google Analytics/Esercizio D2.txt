@@ -1,0 +1,9 @@
+L'esercizio svolto continua sul sito creato nella lezione prcedente 
+
+sito : https://sites.google.com/view/masteryexcel/home
+
+
+Una parte del sito richiede di collegare la reportistica elaborata con Google Looker Studio nel sito stesso.
+Nella pagina contatti del sito, c'è un pulsante che collega direttamente ai report.
+
+Per semplicità sono stati caricati tutti  Report in formato pdf.
