@@ -1,0 +1,5 @@
+L'esercizio finale del modulo di Google Looker comprende :
+- una pulizia di un Database
+- La realizzazione di una reportistica utilizzando Google Looker 
+
+sito : https://lookerstudio.google.com/reporting/648b1db8-195e-4535-b469-5f3b69d55b7d/page/p_szmwsne6ad
